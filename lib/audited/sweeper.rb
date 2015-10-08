@@ -17,12 +17,17 @@ module Audited
 
     def before_create(audit)
       audit.user ||= current_user
+      p "======================"
       p audit.user
       audit.remote_address = controller.try(:request).try(:remote_ip)
       audit.request_uuid = request_uuid if request_uuid
     end
 
     def current_user
+      p "===========current_user start============"
+      p Audited.current_user_method
+      p controller.respond_to?(Audited.current_user_method, true)
+      p controller.send(Audited.current_user_method)
       controller.send(Audited.current_user_method) if controller.respond_to?(Audited.current_user_method, true)
     end
 
