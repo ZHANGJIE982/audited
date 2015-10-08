@@ -193,6 +193,7 @@ module Audited
       end
 
       def audit_update
+        p "============audit_update start=========="        
         unless (changes = audited_changes).empty? && audit_comment.blank?
           write_audit(:action => 'update', :audited_changes => changes,
                       :comment => audit_comment)
@@ -207,6 +208,7 @@ module Audited
       def write_audit(attrs)
         attrs[:associated] = self.send(audit_associated_with) unless audit_associated_with.nil?
         self.audit_comment = nil
+        p "============write_audit start=========="
         run_callbacks(:audit)  { self.audits.create(attrs) } if auditing_enabled
       end
 
