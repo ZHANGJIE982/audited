@@ -7,14 +7,11 @@ module Audited
 
     attr_accessor :controller
     def before(controller)
-      p "before=========="
-      p controller
       self.controller = controller
       true
     end
 
     def after(controller)
-      p "after==========="
       self.controller = nil
     end
 
@@ -28,12 +25,13 @@ module Audited
 
     def current_user
       p "===========current_user start============"
-      p :controller
+      p controller
       controller.send(Audited.current_user_method) if controller.respond_to?(Audited.current_user_method, true)
       p "===========current_user end============"
     end
 
     def request_uuid
+      p "==========request_uuid start============"
       controller.try(:request).try(:uuid)
     end
 
@@ -43,6 +41,7 @@ module Audited
     end
 
     def define_callback(klass)
+      p "==============define_callback start============"
       observer = self
       callback_meth = :"_notify_audited_sweeper"
       klass.send(:define_method, callback_meth) do
@@ -52,10 +51,13 @@ module Audited
     end
 
     def controller
+      p "==========controller start============"
+      p ::Audited.store[:current_controller]
       ::Audited.store[:current_controller]
     end
 
     def controller=(value)
+      p "==========controller= start============"
       ::Audited.store[:current_controller] = value
     end
   end
