@@ -28,8 +28,9 @@ module Audited
 
     def current_user
       p "===========current_user start============"
-      p controller.respond_to?(Audited.current_user_method, true)
+      p :controller
       controller.send(Audited.current_user_method) if controller.respond_to?(Audited.current_user_method, true)
+      p "===========current_user end============"
     end
 
     def request_uuid
