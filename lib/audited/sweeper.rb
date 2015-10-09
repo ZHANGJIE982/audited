@@ -7,11 +7,14 @@ module Audited
 
     attr_accessor :controller
     def before(controller)
+      p "before=========="
+      p controller
       self.controller = controller
       true
     end
 
     def after(controller)
+      p "after==========="
       self.controller = nil
     end
 
@@ -25,10 +28,7 @@ module Audited
 
     def current_user
       p "===========current_user start============"
-      p controller.respond_to?(Audited.current_user_method)
       p controller.respond_to?(Audited.current_user_method, true)
-      p controller.respond_to?(Audited.current_user_method, false)
-      p controller
       controller.send(Audited.current_user_method) if controller.respond_to?(Audited.current_user_method, true)
     end
 
